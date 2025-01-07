@@ -8,7 +8,7 @@
 
 ### 
 
-```bash
+```
 bash
 Copy code
 sudo nano /etc/netplan/01-netcfg.yaml
@@ -33,7 +33,7 @@ network:
 
 1. Open the terminal and create the configuration file:
     
-    ```bash
+    ```
     bash
     Copy code
     sudo nano /etc/wpa_supplicant.conf
