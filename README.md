@@ -9,15 +9,11 @@
 ### 
 
 ```
-bash
-Copy code
 sudo nano /etc/netplan/01-netcfg.yaml
 
 ```
 
-```yaml
-yaml
-Copy code
+```
 network:
   version: 2
   renderer: networkd
@@ -34,8 +30,6 @@ network:
 1. Open the terminal and create the configuration file:
     
     ```
-    bash
-    Copy code
     sudo nano /etc/wpa_supplicant.conf
     ```
     
