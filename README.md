@@ -1,3 +1,14 @@
+FACE EMOTION DETECTION ON RASPBERRY PI USING INTEL MOVIDIUS: QUANTIZING THE MODEL
+
+To perform Face Emotion Detection on a Raspberry Pi using Intel Movidius Neural Compute Stick (NCS) and OpenVINO, you will need to follow a set of steps. This guide will help you quantize the model, convert it to the required OpenVINO format (XML and BIN), and run inference on the Raspberry Pi using the Movidius.
+
+Steps:
+Set Up the Raspberry Pi with Ubuntu and OpenVINO
+Quantize the Model for Movidius
+Convert the Model to OpenVINO Format
+Run Face Emotion Detection Using OpenVINO
+
+
 ### 1. Flash Ubuntu 20.04 LTS Server to an SD Card
 
 1. Download the **Ubuntu 20.04 LTS Server** image for Raspberry Pi from the [official Ubuntu downloads](https://ubuntu.com/download).
@@ -8,12 +19,14 @@
 
 ### 
 
-```
+```bash
+
 sudo nano /etc/netplan/01-netcfg.yaml
 
 ```
 
-```
+```yaml
+
 network:
   version: 2
   renderer: networkd
@@ -29,7 +42,8 @@ network:
 
 1. Open the terminal and create the configuration file:
     
-    ```
+    ```bash
+   
     sudo nano /etc/wpa_supplicant.conf
     ```
     
@@ -203,8 +217,34 @@ source ~/.bashrc
 ```
 
 1. DOWNLOAD THE MODEL 
+    
+    https://github.com/djordjebatic/AffectNet.git
+    
 2. CONVERT THE MODEL FROM ITS ORIGINAL FORMAT TO ONNX FORMAT
-3. after converting the file to onnx model convert the model to xml and bin format 
+
+```jsx
+import torch
+from approach.ResEmoteNet import ResEmoteNet
+
+# Load your model
+model = ResEmoteNet()
+checkpoint = torch.load('best_model.pth')
+model.load_state_dict(checkpoint['model_state_dict'])
+model.eval()
+
+# Create a dummy input tensor with the appropriate size
+_input = torch.randn(1, 3, 64, 64)  # Adjust dimensions as needed
+
+# Export the model to ONNX format
+torch.onnx.export(model, _input, "ResEmoteNet.onnx",
+                  export_params=True,
+                  opset_version=10,
+                  do_constant_folding=True,
+                  input_names=['input'],
+                  output_names=['output'])
+```
+
+1. after converting the file to onnx model convert the model to xml and bin format 
 
 ```jsx
 mo --input_model /home/kids/Downloads/ResEmoteNet.onnx --output_dir ./Desktop --Data_type FP16
@@ -212,7 +252,7 @@ mo --input_model /home/kids/Downloads/ResEmoteNet.onnx --output_dir ./Desktop --
 
 1. Write a python code to run the model
 2. emotion_detection.py
-3. 
+3. run the following code on the terminal in the file path:-
 
 ```jsx
 python3 emotion_detection.py /
